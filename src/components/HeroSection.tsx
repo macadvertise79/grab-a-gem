@@ -29,7 +29,7 @@ const HeroSection = () => {
 
           <a
             href="#boxes"
-            className="bg-gradient-gold px-10 py-4 rounded font-heading text-lg font-semibold tracking-wider transition-all hover:opacity-90 glow-gold text-primary bg-primary-foreground">
+            className="bg-background px-10 py-4 rounded font-heading text-lg font-semibold tracking-wider transition-all hover:opacity-80 text-primary border border-primary">
             SHOP ALL
 
           </a>
