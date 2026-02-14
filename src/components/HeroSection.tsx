@@ -12,37 +12,37 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-8"
-        >
+          className="mb-8">
+
           <img
             src={logo}
             alt="Star Icons"
-            className="mx-auto h-32 w-32 md:h-40 md:w-40 rounded-full glow-gold animate-pulse-gold"
-          />
+            className="mx-auto h-32 w-32 md:h-40 md:w-40 rounded-full glow-gold animate-pulse-gold" />
+
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
-        >
+          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+
           <a
             href="#boxes"
-            className="bg-gradient-gold px-10 py-4 rounded font-heading text-lg font-semibold tracking-wider text-primary-foreground transition-all hover:opacity-90 glow-gold"
-          >
-            SHOP BOXES
+            className="bg-gradient-gold px-10 py-4 rounded font-heading text-lg font-semibold tracking-wider transition-all hover:opacity-90 glow-gold text-primary bg-primary-foreground">
+            SHOP ALL
+
           </a>
-          <a
-            href="#how-it-works"
-            className="border border-primary px-10 py-4 rounded font-heading text-lg font-semibold tracking-wider text-primary transition-all hover:bg-primary/10"
-          >
-            HOW IT WORKS
-          </a>
+          
+
+
+
+
+
         </motion.div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default HeroSection;
