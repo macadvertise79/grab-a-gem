@@ -30,7 +30,7 @@ const Navbar = () => {
           ))}
           <a
             href="#boxes"
-            className="bg-gradient-gold px-6 py-2 rounded font-heading text-sm font-semibold tracking-wider text-primary-foreground transition-all hover:opacity-90"
+            className="bg-background px-6 py-2 rounded font-heading text-sm font-semibold tracking-wider text-primary border border-primary transition-all hover:opacity-80"
           >
             SHOP NOW
           </a>
@@ -62,7 +62,7 @@ const Navbar = () => {
               ))}
               <a
                 href="#boxes"
-                className="bg-gradient-gold px-6 py-2 rounded text-center font-heading text-sm font-semibold tracking-wider text-primary-foreground"
+                className="bg-background px-6 py-2 rounded text-center font-heading text-sm font-semibold tracking-wider text-primary border border-primary"
                 onClick={() => setOpen(false)}
               >
                 SHOP NOW
