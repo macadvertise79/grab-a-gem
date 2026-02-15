@@ -5,25 +5,46 @@ import box3 from "@/assets/box-3.jpg";
 
 const boxes = [
   {
-    name: "Gold Tier",
-    price: "$49.99",
+    name: "Mystery Box #1",
+    price: "$29.99",
     image: box1,
-    description: "Guaranteed autographed memorabilia from top-tier athletes.",
-    tag: "BEST SELLER",
+    description: "Who's inside? Unbox to reveal a legendary sports icon.",
+    tag: "🔒 MYSTERY",
   },
   {
-    name: "Silver Tier",
+    name: "Mystery Box #2",
     price: "$29.99",
     image: box2,
-    description: "Premium collectible cards and exclusive figurines.",
-    tag: "POPULAR",
+    description: "A hidden champion awaits. Will you unlock greatness?",
+    tag: "🔒 MYSTERY",
   },
   {
-    name: "Legend Tier",
+    name: "Mystery Box #3",
+    price: "$29.99",
+    image: box3,
+    description: "Sealed tight. Only the bold will discover what's within.",
+    tag: "🔒 MYSTERY",
+  },
+  {
+    name: "Mystery Box #4",
+    price: "$49.99",
+    image: box1,
+    description: "Premium tier mystery. A true collector's dream inside.",
+    tag: "⭐ PREMIUM",
+  },
+  {
+    name: "Mystery Box #5",
+    price: "$49.99",
+    image: box2,
+    description: "Ultra-rare potential. This box holds something special.",
+    tag: "⭐ PREMIUM",
+  },
+  {
+    name: "Mystery Box #6",
     price: "$99.99",
     image: box3,
-    description: "Ultra-rare items from Hall of Fame legends. Limited drops.",
-    tag: "LIMITED",
+    description: "The rarest of them all. Limited edition legend inside.",
+    tag: "🔥 LIMITED",
   },
 ];
 
@@ -45,7 +66,7 @@ const FeaturedBoxes = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {boxes.map((box, i) => (
             <motion.div
               key={box.name}
