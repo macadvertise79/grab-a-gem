@@ -1,22 +1,25 @@
 import { motion } from "framer-motion";
-import box1 from "@/assets/box-1.jpg";
-import box2 from "@/assets/box-2.jpg";
-import box3 from "@/assets/box-3.jpg";
+import silhouette1 from "@/assets/silhouette-1.png";
+import silhouette2 from "@/assets/silhouette-2.png";
+import silhouette3 from "@/assets/silhouette-3.png";
+import silhouette4 from "@/assets/silhouette-4.png";
+import silhouette5 from "@/assets/silhouette-5.png";
+import silhouette6 from "@/assets/silhouette-6.png";
 
 const activeBox = {
   name: "Mystery Character #1",
   price: "$29.99",
-  image: box1,
+  image: silhouette1,
   description: "Who's inside? Unbox to reveal a legendary sports icon.",
   tag: "🔥 PRE-ORDER NOW",
 };
 
 const comingSoonBoxes = [
-  { name: "Mystery Character #2", image: box2 },
-  { name: "Mystery Character #3", image: box3 },
-  { name: "Mystery Character #4", image: box1 },
-  { name: "Mystery Character #5", image: box2 },
-  { name: "Mystery Character #6", image: box3 },
+  { name: "Mystery Character #2", image: silhouette2 },
+  { name: "Mystery Character #3", image: silhouette3 },
+  { name: "Mystery Character #4", image: silhouette4 },
+  { name: "Mystery Character #5", image: silhouette5 },
+  { name: "Mystery Character #6", image: silhouette6 },
 ];
 
 const FeaturedBoxes = () => {
