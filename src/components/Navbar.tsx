@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/logo.jpg";
 
-const navLinks = ["Boxes", "How It Works", "About", "Contact"];
+const navLinks = [
+  { label: "Boxes", to: "/#boxes" },
+  { label: "How It Works", to: "/#how-it-works" },
+  { label: "About", to: "/about" },
+  { label: "Contact", to: "/#contact" },
+];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -20,20 +26,20 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase().replace(/\s/g, "-")}`}
+            <Link
+              key={link.label}
+              to={link.to}
               className="font-heading text-sm tracking-wider text-muted-foreground transition-colors hover:text-primary"
             >
-              {link}
-            </a>
+              {link.label}
+            </Link>
           ))}
-          <a
-            href="#boxes"
+          <Link
+            to="/#boxes"
             className="bg-background px-6 py-2 rounded font-heading text-sm font-semibold tracking-wider text-primary border border-primary transition-all hover:opacity-80"
           >
             SHOP NOW
-          </a>
+          </Link>
         </div>
 
         <button className="md:hidden text-foreground" onClick={() => setOpen(!open)}>
@@ -51,22 +57,22 @@ const Navbar = () => {
           >
             <div className="flex flex-col gap-4 px-6 py-6">
               {navLinks.map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(/\s/g, "-")}`}
+                <Link
+                  key={link.label}
+                  to={link.to}
                   className="font-heading text-sm tracking-wider text-muted-foreground hover:text-primary"
                   onClick={() => setOpen(false)}
                 >
-                  {link}
-                </a>
+                  {link.label}
+                </Link>
               ))}
-              <a
-                href="#boxes"
+              <Link
+                to="/#boxes"
                 className="bg-background px-6 py-2 rounded text-center font-heading text-sm font-semibold tracking-wider text-primary border border-primary"
                 onClick={() => setOpen(false)}
               >
                 SHOP NOW
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}
