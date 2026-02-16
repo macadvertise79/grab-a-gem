@@ -55,7 +55,7 @@ const FeaturedBoxes = () => {
               and 5 mystery characters are coming soon.
             </p>
             <div className="flex flex-wrap gap-3 mb-8">
-              <a href="#boxes" className="bg-gradient-gold px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider text-primary-foreground transition-all hover:opacity-90">
+              <a href="/icon/001" className="bg-gradient-gold px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider text-primary-foreground transition-all hover:opacity-90">
                 Preorder Now
               </a>
               <a href="#coming-soon" className="bg-background text-primary border border-primary px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider transition-all hover:opacity-90">
