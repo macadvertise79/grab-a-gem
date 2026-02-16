@@ -35,7 +35,7 @@ const Navbar = () => {
             </Link>
           ))}
           <Link
-            to="/#boxes"
+            to="/shop"
             className="bg-background px-6 py-2 rounded font-heading text-sm font-semibold tracking-wider text-primary border border-primary transition-all hover:opacity-80"
           >
             SHOP NOW
@@ -67,7 +67,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Link
-                to="/#boxes"
+                to="/shop"
                 className="bg-background px-6 py-2 rounded text-center font-heading text-sm font-semibold tracking-wider text-primary border border-primary"
                 onClick={() => setOpen(false)}
               >
