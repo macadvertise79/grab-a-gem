@@ -45,7 +45,7 @@ const FeaturedBoxes = () => {
                 Limited preorder live
               </span>
             </div>
-            <p className="text-xs text-muted-foreground font-heading tracking-widest uppercase mb-2">
+            <p className="text-sm text-primary font-heading tracking-widest uppercase mb-2 font-bold">
               Series 1 — "The Eternals"
             </p>
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight mb-4">
@@ -130,6 +130,7 @@ const FeaturedBoxes = () => {
 
         {/* Coming Soon */}
         <div id="coming-soon">
+          <p className="text-sm text-primary font-heading tracking-widest uppercase mb-2 font-bold">Series 1 — "The Eternals"</p>
           <h3 className="text-center text-2xl font-heading font-bold text-muted-foreground mb-8">COMING SOON</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-6xl mx-auto">
             {comingSoonBoxes.map((box, i) => (
