@@ -45,6 +45,9 @@ const FeaturedBoxes = () => {
                 Limited preorder live
               </span>
             </div>
+            <p className="text-xs text-muted-foreground font-heading tracking-widest uppercase mb-2">
+              Series 1 — "The Eternals"
+            </p>
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight mb-4">
               Collect the first<br />
               <span className="text-gradient-gold">STAR ICON.</span>
