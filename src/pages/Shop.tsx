@@ -85,20 +85,20 @@ const Shop = () => {
           </motion.div>
 
           {/* Carousel */}
-          <div className="max-w-md mx-auto mb-12">
+          <div className="max-w-sm sm:max-w-md mx-auto mb-12 px-2">
             <div className="relative">
               {/* Arrows */}
               <button
                 onClick={prev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 md:-translate-x-16 z-10 h-10 w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 sm:-translate-x-12 md:-translate-x-16 z-10 h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
               <button
                 onClick={next}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 md:translate-x-16 z-10 h-10 w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 sm:translate-x-12 md:translate-x-16 z-10 h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
               >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
 
               {/* Card */}
