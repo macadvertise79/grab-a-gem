@@ -21,20 +21,20 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="py-24">
-      <div className="container mx-auto px-6">
+    <section id="how-it-works" className="py-16 sm:py-24">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-gradient-gold">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-gradient-gold">
             HOW IT WORKS
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 max-w-4xl mx-auto">
           {steps.map((step, i) => (
             <motion.div
               key={step.title}
@@ -44,13 +44,13 @@ const HowItWorks = () => {
               transition={{ delay: i * 0.2 }}
               className="text-center"
             >
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary bg-primary/10">
-                <step.icon className="h-8 w-8 text-primary" />
+              <div className="mx-auto mb-5 sm:mb-6 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 border-primary bg-primary/10">
+                <step.icon className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
               </div>
               <div className="font-heading text-sm tracking-wider text-muted-foreground mb-2">
                 STEP {i + 1}
               </div>
-              <h3 className="font-heading text-xl font-bold text-foreground mb-3">
+              <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground mb-3">
                 {step.title}
               </h3>
               <p className="text-sm text-muted-foreground">{step.description}</p>

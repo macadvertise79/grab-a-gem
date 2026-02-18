@@ -65,44 +65,44 @@ const Shop = () => {
       <Navbar />
 
       <main className="pt-24 pb-16">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="text-center mb-10 sm:mb-16"
           >
             <p className="text-sm text-primary font-heading tracking-widest uppercase mb-2 font-bold">
               Series 1 — "The Eternals"
             </p>
-            <h1 className="text-4xl md:text-6xl font-heading font-bold text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold text-foreground mb-4">
               THE <span className="text-gradient-gold">ETERNALS</span>
             </h1>
-            <p className="text-muted-foreground max-w-lg mx-auto">
+            <p className="text-muted-foreground max-w-lg mx-auto text-sm sm:text-base px-2">
               Six premium blindbox collectibles — each one a mystery until you open the box.
               Swipe through the lineup below.
             </p>
           </motion.div>
 
           {/* Carousel */}
-          <div className="max-w-sm sm:max-w-md mx-auto mb-12 px-2">
+          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto mb-12">
             <div className="relative">
-              {/* Arrows */}
-              <button
-                onClick={prev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 sm:-translate-x-12 md:-translate-x-16 z-10 h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
-              >
-                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-              </button>
-              <button
-                onClick={next}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 sm:translate-x-12 md:translate-x-16 z-10 h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
-              >
-                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-              </button>
-
               {/* Card */}
               <div className="overflow-hidden rounded-xl border border-primary/50 glow-gold bg-card">
+                {/* Arrows overlaid on card */}
+                <button
+                  onClick={prev}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={next}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full border border-border bg-card/80 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+
                 <AnimatePresence custom={direction} mode="wait">
                   <motion.div
                     key={current}
@@ -120,17 +120,17 @@ const Shop = () => {
                         className="h-full w-full object-cover"
                       />
                     </div>
-                    <div className="p-5 text-center">
+                    <div className="p-4 sm:p-5 text-center">
                       <p className="text-xs text-primary font-heading tracking-widest uppercase mb-1">
                         ICON #{String(character.id).padStart(3, "0")}
                       </p>
-                      <h3 className="font-heading text-xl font-bold text-foreground tracking-wide mb-2">
+                      <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground tracking-wide mb-2">
                         {character.available ? `"${character.name}"` : character.name}
                       </h3>
                       {character.available ? (
                         <Link
                           to="/icon/001"
-                          className="inline-block bg-gradient-gold px-6 py-2.5 rounded font-heading text-sm font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90"
+                          className="inline-block bg-gradient-gold px-5 sm:px-6 py-2.5 rounded font-heading text-sm font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90"
                         >
                           Preorder — $59
                         </Link>

@@ -7,7 +7,7 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       <ShootingStars />
 
-      <div className="relative z-10 container mx-auto px-6 text-center pt-20">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 text-center pt-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -17,7 +17,7 @@ const HeroSection = () => {
           <img
             src={logo}
             alt="Star Icons"
-            className="mx-auto h-32 w-32 md:h-40 md:w-40 rounded-full glow-gold animate-pulse-gold" />
+            className="mx-auto h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 rounded-full glow-gold animate-pulse-gold" />
 
         </motion.div>
 
@@ -25,11 +25,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center px-4">
 
           <a
             href="#boxes"
-            className="bg-background px-10 py-4 rounded font-heading text-lg font-semibold tracking-wider transition-all hover:opacity-80 text-primary border border-primary">
+            className="bg-background px-8 sm:px-10 py-3 sm:py-4 rounded font-heading text-base sm:text-lg font-semibold tracking-wider transition-all hover:opacity-80 text-primary border border-primary w-full sm:w-auto">
             SHOP ALL
 
           </a>

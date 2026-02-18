@@ -28,18 +28,18 @@ const FeaturedBoxes = () => {
   };
 
   return (
-    <section id="boxes" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
+    <section id="boxes" className="py-16 sm:py-24 bg-background">
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Featured Character - Two Column Layout */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto mb-20 grid md:grid-cols-2 gap-10 items-center"
+          className="max-w-5xl mx-auto mb-16 sm:mb-20 grid md:grid-cols-2 gap-8 sm:gap-10 items-center"
         >
           {/* Left Side - Info */}
-          <div>
-            <div className="flex items-center gap-2 mb-6">
+          <div className="text-center md:text-left">
+            <div className="flex items-center gap-2 mb-4 sm:mb-6 justify-center md:justify-start">
               <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
               <span className="text-primary font-heading text-sm tracking-widest uppercase">
                 Limited preorder live
@@ -48,24 +48,24 @@ const FeaturedBoxes = () => {
             <p className="text-sm text-primary font-heading tracking-widest uppercase mb-2 font-bold">
               Series 1 — "The Eternals"
             </p>
-            <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground leading-tight mb-4">
               Collect the first<br />
               <span className="text-gradient-gold">STAR ICON.</span>
             </h2>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
+            <p className="text-muted-foreground mb-6 leading-relaxed text-sm sm:text-base">
               Premium blindbox-style sport collectibles.
               One character is available to preorder today —
               and 5 mystery characters are coming soon.
             </p>
-            <div className="flex flex-wrap gap-3 mb-8">
-              <a href="/icon/001" className="bg-gradient-gold px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider text-primary-foreground transition-all hover:opacity-90">
+            <div className="flex flex-wrap gap-3 mb-6 sm:mb-8 justify-center md:justify-start">
+              <a href="/icon/001" className="bg-gradient-gold px-5 sm:px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider text-primary-foreground transition-all hover:opacity-90">
                 Preorder Now
               </a>
-              <a href="#coming-soon" className="bg-background text-primary border border-primary px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider transition-all hover:opacity-90">
+              <a href="#coming-soon" className="bg-background text-primary border border-primary px-5 sm:px-6 py-2.5 rounded font-heading text-sm font-semibold tracking-wider transition-all hover:opacity-90">
                 See Mystery Lineup
               </a>
             </div>
-            <div className="flex flex-wrap gap-4 text-xs text-primary font-heading tracking-wider">
+            <div className="flex flex-wrap gap-3 sm:gap-4 text-xs text-primary font-heading tracking-wider justify-center md:justify-start">
               <span>✦ Limited run</span>
               <span>✦ Gold details</span>
               <span>✦ Blindbox unboxing</span>
@@ -131,8 +131,8 @@ const FeaturedBoxes = () => {
         {/* Coming Soon */}
         <div id="coming-soon">
           <p className="text-sm text-primary font-heading tracking-widest uppercase mb-2 font-bold text-center">Series 1 — "The Eternals"</p>
-          <h3 className="text-center text-2xl font-heading font-bold text-muted-foreground mb-8">COMING SOON</h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-6xl mx-auto">
+          <h3 className="text-center text-xl sm:text-2xl font-heading font-bold text-muted-foreground mb-6 sm:mb-8">COMING SOON</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 max-w-6xl mx-auto">
             {comingSoonBoxes.map((box, i) => (
               <motion.div
                 key={box.name}
@@ -142,16 +142,16 @@ const FeaturedBoxes = () => {
                 transition={{ delay: i * 0.1 }}
                 className="relative rounded-lg overflow-hidden bg-card border border-border opacity-60"
               >
-                <div className="absolute top-3 right-3 z-10">
-                  <span className="bg-muted px-2 py-1 rounded text-xs font-heading font-bold text-muted-foreground tracking-wider">
-                    🔒 COMING SOON
+                <div className="absolute top-2 right-2 z-10">
+                  <span className="bg-muted px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-heading font-bold text-muted-foreground tracking-wider">
+                    🔒 SOON
                   </span>
                 </div>
                 <div className="aspect-square overflow-hidden">
                   <img src={box.image} alt={box.name} className="h-full w-full object-cover grayscale" />
                 </div>
-                <div className="p-4 text-center">
-                  <h3 className="font-heading text-lg font-bold text-muted-foreground">{box.name}</h3>
+                <div className="p-2 sm:p-4 text-center">
+                  <h3 className="font-heading text-xs sm:text-base font-bold text-muted-foreground">{box.name}</h3>
                 </div>
               </motion.div>
             ))}
