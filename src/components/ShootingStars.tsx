@@ -25,7 +25,7 @@ const ShootingStars = () => {
 
     const resize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
+      canvas.height = window.innerHeight;
     };
     resize();
     window.addEventListener("resize", resize);
@@ -99,7 +99,7 @@ const ShootingStars = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-0 pointer-events-none"
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
     />
   );
 };
