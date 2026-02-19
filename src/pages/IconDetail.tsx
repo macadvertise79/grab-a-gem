@@ -1,22 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import silhouette1 from "@/assets/silhouette-1.png";
+import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
+import { useCartStore } from "@/stores/cartStore";
+import { toast } from "sonner";
 
 const IconDetail = () => {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [product, setProduct] = useState<ShopifyProduct | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { addItem, isLoading: cartLoading } = useCartStore();
 
-  const handlePreorder = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubmitted(true);
-      setEmail("");
-    }
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const data = await storefrontApiRequest(PRODUCTS_QUERY, { first: 10 });
+        const products: ShopifyProduct[] = data?.data?.products?.edges ?? [];
+        // Use the first available product, or fall back to null
+        if (products.length > 0) {
+          setProduct(products[0]);
+        }
+      } catch (e) {
+        console.error("Failed to fetch product:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, []);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    const variant = product.node.variants.edges[0]?.node;
+    if (!variant) return;
+    await addItem({
+      product,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions,
+    });
+    toast.success("Added to cart!", {
+      description: product.node.title,
+      position: "top-center",
+    });
   };
+
+  const productImage = product?.node.images.edges[0]?.node.url ?? silhouette1;
+  const productTitle = product?.node.title ?? "ICON #001";
+  const productDesc = product?.node.description ?? "The inaugural Star Icons collectible — a premium blindbox-style sport figure featuring a dynamic striker silhouette with gold accents. Each box includes a collector card and display stand.";
+  const variant = product?.node.variants.edges[0]?.node;
+  const price = variant ? `$${parseFloat(variant.price.amount).toFixed(2)}` : "$59";
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,8 +80,8 @@ const IconDetail = () => {
             >
               <div className="aspect-[3/4] overflow-hidden">
                 <img
-                  src={silhouette1}
-                  alt="ICON #001 — Gold Striker"
+                  src={productImage}
+                  alt={productTitle}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -66,16 +104,12 @@ const IconDetail = () => {
                 ICON #001
               </h1>
               <h2 className="text-2xl font-heading font-bold text-gradient-gold mb-6">
-                "Gold Striker"
+                "{productTitle}"
               </h2>
 
-              <p className="text-2xl font-heading font-bold text-primary mb-6">$59</p>
+              <p className="text-2xl font-heading font-bold text-primary mb-6">{price}</p>
 
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                The inaugural Star Icon collectible — a premium blindbox-style sport figure
-                featuring a dynamic striker silhouette with gold accents. Each box includes
-                a collector card and display stand.
-              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">{productDesc}</p>
 
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -96,32 +130,32 @@ const IconDetail = () => {
                 </div>
               </div>
 
-              {submitted ? (
-                <div className="text-center py-4 rounded-lg border border-primary/30 bg-primary/5">
-                  <p className="text-primary font-heading text-sm font-bold">✓ You're on the list!</p>
-                  <p className="text-muted-foreground text-xs mt-1">We'll notify you when it's ready to ship.</p>
+              {loading ? (
+                <div className="flex items-center justify-center py-6">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
                 </div>
+              ) : product ? (
+                <button
+                  onClick={handleAddToCart}
+                  disabled={cartLoading || !variant?.availableForSale}
+                  className="w-full bg-gradient-gold px-6 py-3 rounded font-heading text-sm font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2"
+                >
+                  {cartLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    `Add to Cart — ${price}`
+                  )}
+                </button>
               ) : (
-                <form onSubmit={handlePreorder} className="space-y-3">
-                  <input
-                    type="email"
-                    required
-                    placeholder="Enter your email to preorder"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-background border border-border rounded px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-gradient-gold px-6 py-3 rounded font-heading text-sm font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90"
-                  >
-                    Preorder Now — $59
-                  </button>
-                  <p className="text-[10px] text-muted-foreground/60 text-center">
-                    No spam — only launch + shipping updates
-                  </p>
-                </form>
+                /* No product in Shopify yet — show preorder email fallback */
+                <div className="text-center py-4 rounded-lg border border-primary/30 bg-primary/5">
+                  <p className="text-primary font-heading text-sm font-bold">Coming Soon</p>
+                  <p className="text-muted-foreground text-xs mt-1">Product not yet available in store.</p>
+                </div>
               )}
+              <p className="text-[10px] text-muted-foreground/60 text-center mt-3">
+                Secure checkout powered by Shopify
+              </p>
             </motion.div>
           </div>
         </div>
