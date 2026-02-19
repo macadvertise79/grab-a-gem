@@ -8,8 +8,23 @@ import About from "./pages/About";
 import Shop from "./pages/Shop";
 import IconDetail from "./pages/IconDetail";
 import NotFound from "./pages/NotFound";
+import { useCartSync } from "./hooks/useCartSync";
 
 const queryClient = new QueryClient();
+
+function AppInner() {
+  useCartSync();
+  return (
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/icon/001" element={<IconDetail />} />
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -17,14 +32,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/icon/001" element={<IconDetail />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppInner />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
