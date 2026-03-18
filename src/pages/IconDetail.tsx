@@ -1,15 +1,21 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import silhouette1 from "@/assets/silhouette-1.png";
-import { storefrontApiRequest, PRODUCTS_QUERY, ShopifyProduct } from "@/lib/shopify";
+import {
+  PRODUCT_BY_HANDLE_QUERY,
+  PRODUCTS_QUERY,
+  ShopifyProduct,
+  storefrontApiRequest,
+} from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
 
 const IconDetail = () => {
+  const { handle } = useParams();
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const { addItem, isLoading: cartLoading } = useCartStore();
@@ -17,25 +23,33 @@ const IconDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        if (handle) {
+          const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
+          const foundProduct = data?.data?.productByHandle;
+          if (foundProduct) {
+            setProduct({ node: foundProduct });
+            return;
+          }
+        }
+
         const data = await storefrontApiRequest(PRODUCTS_QUERY, { first: 10 });
         const products: ShopifyProduct[] = data?.data?.products?.edges ?? [];
-        // Use the first available product, or fall back to null
-        if (products.length > 0) {
-          setProduct(products[0]);
-        }
-      } catch (e) {
-        console.error("Failed to fetch product:", e);
+        setProduct(products[0] ?? null);
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchProduct();
-  }, []);
+
+    void fetchProduct();
+  }, [handle]);
 
   const handleAddToCart = async () => {
     if (!product) return;
     const variant = product.node.variants.edges[0]?.node;
     if (!variant) return;
+
     await addItem({
       product,
       variantId: variant.id,
@@ -44,6 +58,7 @@ const IconDetail = () => {
       quantity: 1,
       selectedOptions: variant.selectedOptions,
     });
+
     toast.success("Added to cart!", {
       description: product.node.title,
       position: "top-center",
@@ -52,7 +67,9 @@ const IconDetail = () => {
 
   const productImage = product?.node.images.edges[0]?.node.url ?? silhouette1;
   const productTitle = product?.node.title ?? "ICON #001";
-  const productDesc = product?.node.description ?? "The inaugural Star Icons collectible — a premium blindbox-style sport figure featuring a dynamic striker silhouette with gold accents. Each box includes a collector card and display stand.";
+  const productDesc =
+    product?.node.description ||
+    "The inaugural Star Icons collectible - a premium blindbox-style sport figure featuring a dynamic striker silhouette with gold accents. Each box includes a collector card and display stand.";
   const variant = product?.node.variants.edges[0]?.node;
   const price = variant ? `$${parseFloat(variant.price.amount).toFixed(2)}` : "$59";
 
@@ -71,7 +88,6 @@ const IconDetail = () => {
           </Link>
 
           <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto items-start">
-            {/* Left - Image */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -79,15 +95,10 @@ const IconDetail = () => {
               className="rounded-xl overflow-hidden border border-primary/50 glow-gold"
             >
               <div className="aspect-[3/4] overflow-hidden">
-                <img
-                  src={productImage}
-                  alt={productTitle}
-                  className="h-full w-full object-cover"
-                />
+                <img src={productImage} alt={productTitle} className="h-full w-full object-cover" />
               </div>
             </motion.div>
 
-            {/* Right - Details */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -96,15 +107,15 @@ const IconDetail = () => {
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                 <span className="text-primary font-heading text-xs tracking-widest uppercase">
-                  Limited Preorder Live
+                  {product ? "Shopify product live" : "Limited preorder live"}
                 </span>
               </div>
 
               <h1 className="text-3xl md:text-4xl font-heading font-bold text-foreground leading-tight mb-2">
-                ICON #001
+                {product ? productTitle : "ICON #001"}
               </h1>
               <h2 className="text-2xl font-heading font-bold text-gradient-gold mb-6">
-                "{productTitle}"
+                {product ? "Storefront product" : `"${productTitle}"`}
               </h2>
 
               <p className="text-2xl font-heading font-bold text-primary mb-6">{price}</p>
@@ -113,20 +124,20 @@ const IconDetail = () => {
 
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span className="text-primary">✦</span>
-                  <span>Limited production run — once sold out, it's gone</span>
+                  <span className="text-primary">•</span>
+                  <span>Limited production run - once sold out, it&apos;s gone</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span className="text-primary">✦</span>
+                  <span className="text-primary">•</span>
                   <span>Gold foil detail accents on figure and packaging</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span className="text-primary">✦</span>
+                  <span className="text-primary">•</span>
                   <span>Blindbox unboxing experience with collector card</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span className="text-primary">✦</span>
-                  <span>Ships when preorder window closes</span>
+                  <span className="text-primary">•</span>
+                  <span>Secure checkout handled by Shopify</span>
                 </div>
               </div>
 
@@ -143,14 +154,15 @@ const IconDetail = () => {
                   {cartLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    `Add to Cart — ${price}`
+                    `Add to Cart - ${price}`
                   )}
                 </button>
               ) : (
-                /* No product in Shopify yet — show preorder email fallback */
                 <div className="text-center py-4 rounded-lg border border-primary/30 bg-primary/5">
                   <p className="text-primary font-heading text-sm font-bold">Coming Soon</p>
-                  <p className="text-muted-foreground text-xs mt-1">Product not yet available in store.</p>
+                  <p className="text-muted-foreground text-xs mt-1">
+                    Product not yet available in Shopify.
+                  </p>
                 </div>
               )}
               <p className="text-[10px] text-muted-foreground/60 text-center mt-3">
