@@ -1,11 +1,19 @@
 import { toast } from "sonner";
 
 export const SHOPIFY_API_VERSION = "2025-07";
-export const SHOPIFY_STORE_PERMANENT_DOMAIN = "nwiwmt-ia.myshopify.com";
+export const SHOPIFY_STORE_PERMANENT_DOMAIN =
+  import.meta.env.VITE_SHOPIFY_STORE_DOMAIN ?? "nwiwmt-ia.myshopify.com";
 export const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-export const SHOPIFY_STOREFRONT_TOKEN = "f9f0b99a89e014e00f614f2d2597d901";
+export const SHOPIFY_STOREFRONT_TOKEN =
+  import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN ?? "";
 
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
+  if (!SHOPIFY_STOREFRONT_TOKEN) {
+    if (import.meta.env.PROD) {
+      console.warn("Shopify: VITE_SHOPIFY_STOREFRONT_TOKEN is not set. Add it to your deployment env for cart and checkout.");
+    }
+    return null;
+  }
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {
     method: "POST",
     headers: {

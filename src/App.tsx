@@ -20,6 +20,7 @@ function AppInner() {
       <Route path="/about" element={<About />} />
       <Route path="/shop" element={<Shop />} />
       <Route path="/icon/001" element={<IconDetail />} />
+      <Route path="/products/:handle" element={<IconDetail />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -31,7 +32,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <AppInner />
       </BrowserRouter>
     </TooltipProvider>
