@@ -4,8 +4,27 @@ export const SHOPIFY_API_VERSION = "2025-07";
 export const SHOPIFY_STORE_PERMANENT_DOMAIN =
   import.meta.env.VITE_SHOPIFY_STORE_DOMAIN ?? "nwiwmt-ia.myshopify.com";
 export const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
+export const SHOPIFY_CONTACT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/contact`;
 export const SHOPIFY_STOREFRONT_TOKEN =
   import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN ?? "";
+
+export async function subscribeToPreorders(email: string): Promise<void> {
+  const formData = new URLSearchParams({
+    form_type: "customer",
+    utf8: "\u2713",
+    "contact[email]": email,
+    "contact[tags]": "newsletter,preorder",
+  });
+
+  await fetch(SHOPIFY_CONTACT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    body: formData.toString(),
+  });
+}
 
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
   if (!SHOPIFY_STOREFRONT_TOKEN) {
