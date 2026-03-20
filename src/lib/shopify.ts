@@ -1,29 +1,54 @@
 import { toast } from "sonner";
 
 export const SHOPIFY_API_VERSION = "2025-07";
+export const SHOPIFY_CUSTOMER_API_VERSION = "unstable";
 export const SHOPIFY_STORE_PERMANENT_DOMAIN =
   import.meta.env.VITE_SHOPIFY_STORE_DOMAIN ?? "nwiwmt-ia.myshopify.com";
 export const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-export const SHOPIFY_CONTACT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/contact`;
+export const SHOPIFY_CUSTOMER_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_CUSTOMER_API_VERSION}/graphql.json`;
 export const SHOPIFY_STOREFRONT_TOKEN =
   import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN ?? "";
 
 export async function subscribeToPreorders(email: string): Promise<void> {
-  const formData = new URLSearchParams({
-    form_type: "customer",
-    utf8: "\u2713",
-    "contact[email]": email,
-    "contact[tags]": "newsletter,preorder",
+  if (!SHOPIFY_STOREFRONT_TOKEN) {
+    throw new Error("Shopify storefront token is missing.");
+  }
+
+  const response = await fetch(SHOPIFY_CUSTOMER_STOREFRONT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": SHOPIFY_STOREFRONT_TOKEN,
+    },
+    body: JSON.stringify({
+      query: `
+        mutation customerEmailMarketingSubscribe($email: String!) {
+          customerEmailMarketingSubscribe(email: $email) {
+            customer { id }
+            customerUserErrors { field message code }
+          }
+        }
+      `,
+      variables: { email },
+    }),
   });
 
-  await fetch(SHOPIFY_CONTACT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-    },
-    body: formData.toString(),
-  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const userErrors = data.data?.customerEmailMarketingSubscribe?.customerUserErrors ?? [];
+  if (data.errors?.length) {
+    throw new Error(
+      `Shopify error: ${data.errors.map((error: { message: string }) => error.message).join(", ")}`
+    );
+  }
+  if (userErrors.length > 0) {
+    throw new Error(
+      `Shopify error: ${userErrors.map((error: { message: string }) => error.message).join(", ")}`
+    );
+  }
 }
 
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
