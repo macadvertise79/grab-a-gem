@@ -94,8 +94,8 @@ const IconDetail = () => {
               transition={{ duration: 0.6 }}
               className="rounded-xl overflow-hidden border border-primary/50 glow-gold"
             >
-              <div className="aspect-[3/4] overflow-hidden">
-                <img src={productImage} alt={productTitle} className="h-full w-full object-cover" />
+              <div className="aspect-[3/4] overflow-hidden bg-background/40 p-4 sm:p-6">
+                <img src={productImage} alt={productTitle} className="h-full w-full object-contain object-center" />
               </div>
             </motion.div>
 

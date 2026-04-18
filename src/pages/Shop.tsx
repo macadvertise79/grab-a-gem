@@ -153,11 +153,15 @@ const Shop = () => {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                   >
                     <div
-                      className={`aspect-[3/4] overflow-hidden ${
+                      className={`aspect-[3/4] overflow-hidden bg-background/40 p-4 sm:p-6 ${
                         !character.available ? "grayscale opacity-60" : ""
                       }`}
                     >
-                      <img src={character.image} alt={character.name} className="h-full w-full object-cover" />
+                      <img
+                        src={character.image}
+                        alt={character.name}
+                        className="h-full w-full object-contain object-center"
+                      />
                     </div>
                     <div className="p-4 sm:p-5 text-center">
                       <p className="text-xs text-primary font-heading tracking-widest uppercase mb-1">

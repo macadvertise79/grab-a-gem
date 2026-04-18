@@ -130,8 +130,8 @@ const FeaturedBoxes = () => {
               </span>
               <span className="font-heading text-lg font-bold text-primary">{featuredPrice}</span>
             </div>
-            <div className="aspect-[3/4] overflow-hidden">
-              <img src={featuredImage} alt={featuredTitle} className="h-full w-full object-cover" />
+            <div className="aspect-[3/4] overflow-hidden bg-background/40 p-4 sm:p-6">
+              <img src={featuredImage} alt={featuredTitle} className="h-full w-full object-contain object-center" />
             </div>
             <div className="p-5">
               <h3 className="font-heading text-lg font-bold text-foreground tracking-wide mb-3">
