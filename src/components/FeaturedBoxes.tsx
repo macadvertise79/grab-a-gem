@@ -66,7 +66,7 @@ const FeaturedBoxes = () => {
   const featuredTitle = featuredProduct?.node.title ?? "Gold Striker";
   const featuredPrice = featuredVariant
     ? `$${parseFloat(featuredVariant.price.amount).toFixed(2)}`
-    : "$59";
+    : "$29.99";
   const featuredDescription =
     featuredProduct?.node.description ||
     "Premium blindbox-style sport collectibles. One character is available to preorder today and 5 mystery characters are coming soon.";

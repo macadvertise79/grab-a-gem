@@ -1,6 +1,6 @@
 import { useState } from "react";
 import logo from "@/assets/logo.jpg";
-import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
+import { Instagram, Facebook } from "lucide-react";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -106,15 +106,19 @@ const Footer = () => {
 
           <div className="flex gap-4 sm:gap-5">
             {[
-              { Icon: Instagram, label: "Instagram" },
-              { Icon: Twitter, label: "Twitter" },
-              { Icon: Youtube, label: "YouTube" },
-              { Icon: Facebook, label: "Facebook" },
-            ].map(({ Icon, label }) => (
+              {
+                Icon: Instagram,
+                label: "Instagram",
+                href: "https://www.instagram.com/star_icons_collectibles/",
+              },
+              { Icon: Facebook, label: "Facebook", href: "#" },
+            ].map(({ Icon, label, href }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
                 aria-label={label}
+                target="_blank"
+                rel="noreferrer"
                 className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-all hover:border-primary hover:text-primary"
               >
                 <Icon size={16} />
