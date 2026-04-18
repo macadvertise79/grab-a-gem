@@ -49,10 +49,6 @@ const Footer = () => {
               <h3 className="font-heading text-lg font-bold text-foreground mb-4">Contact Us</h3>
               <div className="space-y-3">
                 <div className="border border-border p-4">
-                  <p className="text-sm font-semibold text-foreground">customer service</p>
-                  <p className="text-xs text-muted-foreground">Monday - Sunday 09:00 - 18:00</p>
-                </div>
-                <div className="border border-border p-4">
                   <p className="text-sm font-semibold text-foreground">email</p>
                   <p className="text-xs text-muted-foreground">support@staricons.com</p>
                 </div>
