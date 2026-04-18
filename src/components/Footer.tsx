@@ -61,7 +61,7 @@ const Footer = () => {
           </div>
 
           {/* Right side - Link columns */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8">
             <div>
               <h4 className="font-heading text-sm font-bold text-foreground mb-3 sm:mb-4 tracking-widest">HELP</h4>
               <ul className="space-y-2 sm:space-y-2.5">
@@ -76,16 +76,6 @@ const Footer = () => {
               <h4 className="font-heading text-sm font-bold text-foreground mb-3 sm:mb-4 tracking-widest">INFORMATION</h4>
               <ul className="space-y-2 sm:space-y-2.5">
                 {["About Us", "Contact Us", "Global Ambassador", "News"].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">{item}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="col-span-2 sm:col-span-1">
-              <h4 className="font-heading text-sm font-bold text-foreground mb-3 sm:mb-4 tracking-widest">SHOP</h4>
-              <ul className="space-y-2 sm:space-y-2.5">
-                {["Mystery Boxes", "Figures", "Accessories", "New Arrivals"].map((item) => (
                   <li key={item}>
                     <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">{item}</a>
                   </li>
