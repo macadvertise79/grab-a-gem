@@ -13,7 +13,7 @@ import silhouette6 from "@/assets/silhouette-6.png";
 import { PRODUCTS_QUERY, ShopifyProduct, storefrontApiRequest } from "@/lib/shopify";
 
 const fallbackCharacters = [
-  { id: 1, name: "Gold Striker", image: silhouette1, available: true, handle: "001", price: "$59" },
+  { id: 1, name: "Gold Striker", image: silhouette1, available: true, handle: "001", price: "$29.99" },
   { id: 2, name: "Mystery Character #2", image: silhouette2, available: false, handle: null, price: null },
   { id: 3, name: "Mystery Character #3", image: silhouette3, available: false, handle: null, price: null },
   { id: 4, name: "Mystery Character #4", image: silhouette4, available: false, handle: null, price: null },
@@ -175,7 +175,7 @@ const Shop = () => {
                           to={character.handle ? `/products/${character.handle}` : "/icon/001"}
                           className="inline-block bg-gradient-gold px-5 sm:px-6 py-2.5 rounded font-heading text-sm font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90"
                         >
-                          {products.length > 0 ? `View Product - ${character.price}` : "Preorder - $59"}
+                          {products.length > 0 ? `View Product - ${character.price}` : "Preorder - $29.99"}
                         </Link>
                       ) : (
                         <span className="inline-block bg-muted px-4 py-2 rounded text-xs font-heading font-bold text-muted-foreground tracking-wider">

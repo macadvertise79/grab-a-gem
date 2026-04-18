@@ -71,7 +71,7 @@ const IconDetail = () => {
     product?.node.description ||
     "The inaugural Star Icons collectible - a premium blindbox-style sport figure featuring a dynamic striker silhouette with gold accents. Each box includes a collector card and display stand.";
   const variant = product?.node.variants.edges[0]?.node;
-  const price = variant ? `$${parseFloat(variant.price.amount).toFixed(2)}` : "$59";
+  const price = variant ? `$${parseFloat(variant.price.amount).toFixed(2)}` : "$29.99";
 
   return (
     <div className="min-h-screen bg-background">
