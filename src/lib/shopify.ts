@@ -74,48 +74,6 @@ export async function subscribeToPreorders(email: string): Promise<void> {
   }
 }
 
-export async function subscribeToPreorders(email: string): Promise<void> {
-  if (!SHOPIFY_STOREFRONT_TOKEN) {
-    throw new Error("Shopify storefront token is missing.");
-  }
-
-  const response = await fetch(SHOPIFY_CUSTOMER_STOREFRONT_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Shopify-Storefront-Access-Token": SHOPIFY_STOREFRONT_TOKEN,
-    },
-    body: JSON.stringify({
-      query: `
-        mutation customerEmailMarketingSubscribe($email: String!) {
-          customerEmailMarketingSubscribe(email: $email) {
-            customer { id }
-            customerUserErrors { field message code }
-          }
-        }
-      `,
-      variables: { email },
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.json();
-  const userErrors = data.data?.customerEmailMarketingSubscribe?.customerUserErrors ?? [];
-  if (data.errors?.length) {
-    throw new Error(
-      `Shopify error: ${data.errors.map((error: { message: string }) => error.message).join(", ")}`
-    );
-  }
-  if (userErrors.length > 0) {
-    throw new Error(
-      `Shopify error: ${userErrors.map((error: { message: string }) => error.message).join(", ")}`
-    );
-  }
-}
-
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
   if (!SHOPIFY_CONFIG_STATUS.isConfigured) {
     console.warn(getShopifyConfigErrorMessage());
