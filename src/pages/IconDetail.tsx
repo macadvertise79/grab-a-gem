@@ -13,6 +13,8 @@ import {
 } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
+import MarketingSignupForm from "@/components/MarketingSignupForm";
+import StorefrontStatusBanner from "@/components/StorefrontStatusBanner";
 
 const IconDetail = () => {
   const { handle } = useParams();
@@ -28,8 +30,8 @@ const IconDetail = () => {
           const foundProduct = data?.data?.productByHandle;
           if (foundProduct) {
             setProduct({ node: foundProduct });
-            return;
           }
+          return;
         }
 
         const data = await storefrontApiRequest(PRODUCTS_QUERY, { first: 10 });
@@ -50,7 +52,7 @@ const IconDetail = () => {
     const variant = product.node.variants.edges[0]?.node;
     if (!variant) return;
 
-    await addItem({
+    const result = await addItem({
       product,
       variantId: variant.id,
       variantTitle: variant.title,
@@ -59,8 +61,16 @@ const IconDetail = () => {
       selectedOptions: variant.selectedOptions,
     });
 
-    toast.success("Added to cart!", {
-      description: product.node.title,
+    if (result.success) {
+      toast.success("Added to cart!", {
+        description: product.node.title,
+        position: "top-center",
+      });
+      return;
+    }
+
+    toast.error("Couldn't add this item to the cart", {
+      description: result.message ?? "Shopify did not accept the request.",
       position: "top-center",
     });
   };
@@ -79,6 +89,9 @@ const IconDetail = () => {
 
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto mb-8">
+            <StorefrontStatusBanner hasProducts={Boolean(product)} />
+          </div>
           <Link
             to="/#boxes"
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8 font-heading text-sm tracking-wider"
@@ -107,15 +120,15 @@ const IconDetail = () => {
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                 <span className="text-primary font-heading text-xs tracking-widest uppercase">
-                  {product ? "Shopify product live" : "Limited preorder live"}
+                  {product ? "Shopify product live" : "Storefront placeholder"}
                 </span>
               </div>
 
               <h1 className="text-3xl md:text-4xl font-heading font-bold text-foreground leading-tight mb-2">
-                {product ? productTitle : "ICON #001"}
+                {product ? productTitle : "No live Shopify product yet"}
               </h1>
               <h2 className="text-2xl font-heading font-bold text-gradient-gold mb-6">
-                {product ? "Storefront product" : `"${productTitle}"`}
+                {product ? "Storefront product" : "Join the preorder list while the catalog is being published"}
               </h2>
 
               <p className="text-2xl font-heading font-bold text-primary mb-6">{price}</p>
@@ -158,11 +171,18 @@ const IconDetail = () => {
                   )}
                 </button>
               ) : (
-                <div className="text-center py-4 rounded-lg border border-primary/30 bg-primary/5">
-                  <p className="text-primary font-heading text-sm font-bold">Coming Soon</p>
-                  <p className="text-muted-foreground text-xs mt-1">
-                    Product not yet available in Shopify.
+                <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                  <p className="text-primary font-heading text-sm font-bold text-center">Preorder updates</p>
+                  <p className="text-muted-foreground text-xs mt-1 mb-4 text-center">
+                    This route is a placeholder until a live Shopify product is published.
                   </p>
+                  <MarketingSignupForm
+                    buttonLabel="Notify Me"
+                    placeholder="Email preorders"
+                    successMessage="You're on the list! We'll notify you when the product goes live."
+                    className="max-w-none"
+                    inputClassName="bg-background"
+                  />
                 </div>
               )}
               <p className="text-[10px] text-muted-foreground/60 text-center mt-3">

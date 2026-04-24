@@ -3,11 +3,76 @@ import { toast } from "sonner";
 export const SHOPIFY_API_VERSION = "2025-07";
 export const SHOPIFY_CUSTOMER_API_VERSION = "unstable";
 export const SHOPIFY_STORE_PERMANENT_DOMAIN =
-  import.meta.env.VITE_SHOPIFY_STORE_DOMAIN ?? "nwiwmt-ia.myshopify.com";
+  import.meta.env.VITE_SHOPIFY_STORE_DOMAIN?.trim() ?? "";
 export const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
 export const SHOPIFY_CUSTOMER_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_CUSTOMER_API_VERSION}/graphql.json`;
 export const SHOPIFY_STOREFRONT_TOKEN =
-  import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN ?? "";
+  import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN?.trim() ?? "";
+
+const SHOPIFY_CONFIG_ERRORS: string[] = [];
+
+if (!SHOPIFY_STORE_PERMANENT_DOMAIN) {
+  SHOPIFY_CONFIG_ERRORS.push("VITE_SHOPIFY_STORE_DOMAIN is missing.");
+}
+
+if (!SHOPIFY_STOREFRONT_TOKEN) {
+  SHOPIFY_CONFIG_ERRORS.push("VITE_SHOPIFY_STOREFRONT_TOKEN is missing.");
+}
+
+export const SHOPIFY_CONFIG_STATUS = {
+  isConfigured: SHOPIFY_CONFIG_ERRORS.length === 0,
+  errors: SHOPIFY_CONFIG_ERRORS,
+};
+
+function getShopifyConfigErrorMessage(): string {
+  return `Shopify configuration is incomplete: ${SHOPIFY_CONFIG_ERRORS.join(" ")}`;
+}
+
+function assertShopifyConfigured(): void {
+  if (!SHOPIFY_CONFIG_STATUS.isConfigured) {
+    throw new Error(getShopifyConfigErrorMessage());
+  }
+}
+
+export async function subscribeToPreorders(email: string): Promise<void> {
+  assertShopifyConfigured();
+
+  const response = await fetch(SHOPIFY_CUSTOMER_STOREFRONT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": SHOPIFY_STOREFRONT_TOKEN,
+    },
+    body: JSON.stringify({
+      query: `
+        mutation customerEmailMarketingSubscribe($email: String!) {
+          customerEmailMarketingSubscribe(email: $email) {
+            customer { id }
+            customerUserErrors { field message code }
+          }
+        }
+      `,
+      variables: { email },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const userErrors = data.data?.customerEmailMarketingSubscribe?.customerUserErrors ?? [];
+  if (data.errors?.length) {
+    throw new Error(
+      `Shopify error: ${data.errors.map((error: { message: string }) => error.message).join(", ")}`
+    );
+  }
+  if (userErrors.length > 0) {
+    throw new Error(
+      `Shopify error: ${userErrors.map((error: { message: string }) => error.message).join(", ")}`
+    );
+  }
+}
 
 export async function subscribeToPreorders(email: string): Promise<void> {
   if (!SHOPIFY_STOREFRONT_TOKEN) {
@@ -52,10 +117,8 @@ export async function subscribeToPreorders(email: string): Promise<void> {
 }
 
 export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
-  if (!SHOPIFY_STOREFRONT_TOKEN) {
-    if (import.meta.env.PROD) {
-      console.warn("Shopify: VITE_SHOPIFY_STOREFRONT_TOKEN is not set. Add it to your deployment env for cart and checkout.");
-    }
+  if (!SHOPIFY_CONFIG_STATUS.isConfigured) {
+    console.warn(getShopifyConfigErrorMessage());
     return null;
   }
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {
@@ -229,7 +292,6 @@ const CART_LINES_REMOVE_MUTATION = `
 function formatCheckoutUrl(checkoutUrl: string): string {
   try {
     const url = new URL(checkoutUrl);
-    url.searchParams.set("channel", "online_store");
     return url.toString();
   } catch {
     return checkoutUrl;
