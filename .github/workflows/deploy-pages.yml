@@ -17,25 +17,58 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Use "/" for a custom domain, or set VITE_BASE_PATH as a repo variable for project-site deploys.
+      VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/' }}
+      # Set Shopify credentials in repo Settings -> Secrets and variables -> Actions.
+      VITE_SHOPIFY_STORE_DOMAIN: ${{ vars.VITE_SHOPIFY_STORE_DOMAIN || secrets.VITE_SHOPIFY_STORE_DOMAIN }}
+      VITE_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.VITE_SHOPIFY_STOREFRONT_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "20"
           cache: "npm"
+
+      - name: Validate build configuration
+        shell: bash
+        run: |
+          missing=()
+
+          if [ -z "${VITE_SHOPIFY_STORE_DOMAIN}" ]; then
+            missing+=("VITE_SHOPIFY_STORE_DOMAIN")
+          fi
+
+          if [ -z "${VITE_SHOPIFY_STOREFRONT_TOKEN}" ]; then
+            missing+=("VITE_SHOPIFY_STOREFRONT_TOKEN")
+          fi
+
+          if [ ${#missing[@]} -gt 0 ]; then
+            {
+              echo "## Missing GitHub Actions configuration"
+              echo
+              echo "The GitHub Pages build needs these values before it can compile the storefront:"
+              echo
+              for name in "${missing[@]}"; do
+                echo "- \`${name}\`"
+              done
+              echo
+              echo "Set them in: **Settings -> Secrets and variables -> Actions**"
+              echo
+              echo "- Use a repository **Variable** or **Secret** for \`VITE_SHOPIFY_STORE_DOMAIN\`"
+              echo "- Use a repository **Secret** for \`VITE_SHOPIFY_STOREFRONT_TOKEN\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+
+            echo "Missing required GitHub Actions configuration: ${missing[*]}"
+            exit 1
+          fi
 
       - name: Install
         run: npm ci
 
       - name: Build
-        env:
-          # Use "/" for a custom domain, or set VITE_BASE_PATH as a repo variable for project-site deploys.
-          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/' }}
-          # Set Shopify credentials in repo Settings -> Secrets and variables -> Actions.
-          VITE_SHOPIFY_STORE_DOMAIN: ${{ vars.VITE_SHOPIFY_STORE_DOMAIN }}
-          VITE_SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.VITE_SHOPIFY_STOREFRONT_TOKEN }}
         run: npm run build
 
       - name: Upload artifact
