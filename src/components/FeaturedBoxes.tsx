@@ -7,7 +7,13 @@ import silhouette3 from "@/assets/silhouette-3.png";
 import silhouette4 from "@/assets/silhouette-4.png";
 import silhouette5 from "@/assets/silhouette-5.png";
 import silhouette6 from "@/assets/silhouette-6.png";
-import { PRODUCTS_QUERY, ShopifyProduct, storefrontApiRequest } from "@/lib/shopify";
+import {
+  PRODUCTS_QUERY,
+  ShopifyProduct,
+  storefrontApiRequest,
+} from "@/lib/shopify";
+import MarketingSignupForm from "@/components/MarketingSignupForm";
+import StorefrontStatusBanner from "@/components/StorefrontStatusBanner";
 
 const comingSoonBoxes = [
   { name: "Mystery Character #2", image: silhouette2 },
@@ -18,8 +24,6 @@ const comingSoonBoxes = [
 ];
 
 const FeaturedBoxes = () => {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
 
   useEffect(() => {
@@ -34,14 +38,6 @@ const FeaturedBoxes = () => {
 
     void fetchProducts();
   }, []);
-
-  const handlePreorder = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubmitted(true);
-      setEmail("");
-    }
-  };
 
   const featuredProduct = products[0];
   const featuredVariant = featuredProduct?.node.variants.edges[0]?.node;
@@ -58,6 +54,9 @@ const FeaturedBoxes = () => {
   return (
     <section id="boxes" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto mb-8">
+          <StorefrontStatusBanner hasProducts={products.length > 0} />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -128,28 +127,16 @@ const FeaturedBoxes = () => {
                 >
                   View Details
                 </Link>
-              ) : submitted ? (
-                <div className="text-center py-3">
-                  <p className="text-primary font-heading text-sm font-bold">You're on the list!</p>
-                  <p className="text-muted-foreground text-xs mt-1">We'll notify you when it's ready.</p>
-                </div>
               ) : (
-                <form onSubmit={handlePreorder} className="flex gap-2 mb-3">
-                  <input
-                    type="email"
-                    required
+                <div className="mb-3">
+                  <MarketingSignupForm
+                    buttonLabel="Notify Me"
                     placeholder="Email preorders"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 bg-background border border-border rounded px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+                    successMessage="You're on the list! We'll notify you when it's ready."
+                    className="max-w-none"
+                    inputClassName="bg-background"
                   />
-                  <button
-                    type="submit"
-                    className="bg-gradient-gold px-4 py-2 rounded font-heading text-xs font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90 whitespace-nowrap"
-                  >
-                    Notify Me
-                  </button>
-                </form>
+                </div>
               )}
 
               <p className="text-xs text-muted-foreground leading-relaxed">

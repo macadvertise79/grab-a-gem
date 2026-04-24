@@ -11,6 +11,7 @@ import silhouette4 from "@/assets/silhouette-4.png";
 import silhouette5 from "@/assets/silhouette-5.png";
 import silhouette6 from "@/assets/silhouette-6.png";
 import { PRODUCTS_QUERY, ShopifyProduct, storefrontApiRequest } from "@/lib/shopify";
+import StorefrontStatusBanner from "@/components/StorefrontStatusBanner";
 
 const fallbackCharacters = [
   { id: 1, name: "Gold Striker", image: silhouette1, available: true, handle: "001", price: "$59" },
@@ -100,6 +101,9 @@ const Shop = () => {
 
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-3xl mx-auto mb-8">
+            <StorefrontStatusBanner hasProducts={products.length > 0} />
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -175,7 +179,7 @@ const Shop = () => {
                           to={character.handle ? `/products/${character.handle}` : "/icon/001"}
                           className="inline-block bg-gradient-gold px-5 sm:px-6 py-2.5 rounded font-heading text-sm font-bold tracking-wider text-primary-foreground transition-all hover:opacity-90"
                         >
-                          {products.length > 0 ? `View Product - ${character.price}` : "Preorder - $59"}
+                          {products.length > 0 ? `View Product - ${character.price}` : "Join Preorder List"}
                         </Link>
                       ) : (
                         <span className="inline-block bg-muted px-4 py-2 rounded text-xs font-heading font-bold text-muted-foreground tracking-wider">
